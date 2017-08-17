@@ -6,7 +6,7 @@ a grid refinement of a state for use as initial conditions. The file spiralic.da
 a grid size of 1536 used in the manuscript.
 
 # System requirements
-This code has been test with GSL 2.4 (https://www.gnu.org/software/gsl/) and FFTW 3.3.5 (http://www.fftw.org/) 
+This code has been tested with GSL 2.4 (https://www.gnu.org/software/gsl/) and FFTW 3.3.5 (http://www.fftw.org/) 
 with the C compiler gcc 4.9.2 (https://gcc.gnu.org/).  
 
 # Compiling and usage
