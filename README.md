@@ -6,7 +6,7 @@ a grid refinement of a state for use as initial conditions. The file spiralic.da
 with a grid size of 1536.
 
 # System requirements
-This code has been tested with GSL 2.4 (https://www.gnu.org/software/gsl/) and FFTW 3.3.5 (http://www.fftw.org/) 
+This code has been run with GSL 2.4 (https://www.gnu.org/software/gsl/) and FFTW 3.3.5 (http://www.fftw.org/) 
 with the C compiler gcc 4.9.2 (https://gcc.gnu.org/).  
 
 # Compiling and usage
@@ -48,6 +48,11 @@ method is time stepping method - possible values are rk4 for explicit Runge-Kutt
 
 out is base file name for output and input.  The initial condition is retrieved from outic.dat if it exists; otherwise random initial conditions are used. The output files are: out.out contains time step data, outlast.dat contains the last state, outanimation.dat contains the states between timesteps between t2 and t3, outfrequency.dat contains the average frequency between t2 and t3 in dt steps, outvarfrequency.dat contains the variance of the frequency between t2 and t3 in dt steps, outorder.dat contains the average order parameter between t2 and t3 in dt steps, outvarorder.dat contains the variance of the order parameter between t2 and t3 in dt steps, amp contains the average amplitude between t2 and t3 in dt steps, outvaramp.dat contains the variance of the amplitude between t2 and t3 in dt steps. 
 
-Example: ./2dcgleic 768 192 2.0 2.0 0.7 0.7 1e3 5e2 1e3 1 1e-3 1e-3 6 rkf45 random 
+Example: ./2dcgleic 768 192 2.0 2.0 0.75 0.75 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 random 
+A spiral is likely to nucleate out of amplitude turbulence in with these parameters in this time. Use the Mathematica notebook plot.nb to refine the grid and run the next example.
 
-Example: ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 1e4 1e3 1e4 1 1e-10 1e-10 6 rkf45 spiral
+Example: ./2dcgleic 1536 192 2.0 2.0 0.75 0.85 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 refine 
+Quasistatically increase c_3 to a value where the spiral nucleation rate is low. 
+
+ Example: ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 1e4 1e3 1e4 1 1e-10 1e-10 6 rkf45 spiral 
+This spiralic.dat initial condition was generated using the proceedure described above.
