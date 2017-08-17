@@ -65,6 +65,6 @@ Quasistatically increase c_3 to a value where the spiral nucleation rate is low.
 
 Example 3) ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 1e4 1e3 1e4 1 1e-10 1e-10 6 rkf45 spiral 
  
-This spiralic.dat initial condition was generated using the proceedure described above. This grid spacing and error tolerances were converged to the continuum limit.
+This spiralic.dat initial condition was generated using the proceedure described above. The grid spacing and error tolerances here are adequately converged to the continuum limit.
 
 ------------------------------------------------------------------------------------
