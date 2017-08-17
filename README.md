@@ -10,9 +10,9 @@ This code has been test with GSL 2.4 (https://www.gnu.org/software/gsl/) and FFT
 with the C compiler gcc 4.9.2 (https://gcc.gnu.org/).  
 
 # Compiling and usage
-Compile with
+Compile the program with
 
-  gcc -fopenmp -O3 -o 2dcgleic 2dcgleic.c -lgsl -lgslcblas -lfftw3 -lfftw3_omp -lm
+gcc -fopenmp -O3 -o 2dcgleic 2dcgleic.c -lgsl -lgslcblas -lfftw3 -lfftw3_omp -lm
   
 Once compiled, running the program will produce the following usage message:
 
