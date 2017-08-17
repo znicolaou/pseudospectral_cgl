@@ -1,6 +1,6 @@
 # pseudospectral_cgl 
 The file 2dcgleic.c is a C program that utilizes the GNU Scientific Library (GSL), the FFTW fast Fourier transform, 
-and OpenMP libraries to implement a parallel, pseudospectral integration of the two dimensional complex Ginzburg 
+and OpenMP to implement a parallel, pseudospectral integration of the two dimensional complex Ginzburg 
 Landau equation. The file plot.nb is a Mathematica notebook which will plot the output of 2dcgleic and can generate a 
 grid refinement of a state for use as initial conditions. The file spiralic.dat is a sample initial condition file with
 a grid size of 1536 used in the manuscript.
