@@ -10,15 +10,27 @@
 #include <fftw3.h>
 #include <omp.h>
 
-struct parameters {double c1;  double c3; double L; int N; int fcount;};
+struct parameters {double c1i; double c1f; double c3i; double c3f; double t2; double L; int N; int fcount;};
 
 fftw_complex *fftw_y, *fftw_F, *fftw_y2, *fftw_F2;
 fftw_plan iplan, fplan, f2plan, i2plan;
 
 int func (double t, const double y[], double f[], void *params) {
     (void)(t);
-    double c1 = ((struct parameters *)params)->c1;
-    double c3 = ((struct parameters *)params)->c3;
+    double c1, c3;
+    double c1i = ((struct parameters *)params)->c1i;
+    double c3i = ((struct parameters *)params)->c3i;
+    double c1f = ((struct parameters *)params)->c1f;
+    double c3f = ((struct parameters *)params)->c3f;
+    double t2 = ((struct parameters *)params)->t2;
+    if(t < t2) {
+        c1=c1i + (c1f-c1i)*t/t2;
+        c3=c3i + (c3f-c3i)*t/t2;
+    }
+    else {
+        c1 = c1f;
+        c3 = c3f;
+    }
     double L = ((struct parameters *)params)->L;
     int N = ((struct parameters *)params)->N;
     double omegasquared, amp;
@@ -58,40 +70,48 @@ int func (double t, const double y[], double f[], void *params) {
 int main (int argc, char* argv[]) {
     struct timeval start,end,start2,end2;
     
-    if(argc != 14) {
-        printf("%i\n", argc);
-        printf("usage: 2dcgle N L c1 c3 t1 t2 t3 dt epsabs epsrel Nthreads method out \n\n");
+    if(argc != 16) {
+        printf("usage: ./2dcgleic N L c1i c1f c3i c3f t1 t2 t3 dt epsabs epsrel Nthreads method out \n\n");
         printf("N is number of oscillators \n");
         printf("2Pi L is linear system size \n");
-        printf("c1 is CGLE Laplacian coefficient \n");
-        printf("c3 is CGLE cubic coefficient \n");
+        printf("c1i is initial CGLE Laplacian coefficient \n");
+        printf("c1f is final CGLE Laplacian coefficient \n");
+        printf("c3i is initial CGLE cubic coefficient \n");
+        printf("c3f is final CGLE cubic coefficient \n");
         printf("t1 is total integration time \n");
-        printf("t2 is time to start averaging and outputting animation data \n");
+        printf("t2 is time at which c1 and c3 reach their final values.  After this time, start averaging and outputting animation data. \n");
         printf("t3 is time stop outputting animation data \n");
         printf("dt is the time between outputs \n");
         printf("epsabs is absolute error tolerance \n");
         printf("epsrel is relative error tolerance \n");
         printf("Nthreads number of threads to parallelize with\n");
         printf("method is time stepping method - possible values are rk4 for explicit Runge-Kutta 4, rkf45 for Runge-Kutta-Fehlberg 4/5, and adams for Adams multistep\n");
-        printf("out is base file name for output and input.  The initial condition is retrieved from outic.dat. The output files are: out.out contains time step data, outlast.dat contains the last state, outanimation.dat contains the states between timesteps between t2 and t3, outfrequency.dat contains the average frequency between t2 and t3 in dt steps, outvarfrequency.dat contains the variance of the frequency between t2 and t3 in dt steps, outorder.dat contains the average order parameter between t2 and t3 in dt steps, outvarorder.dat contains the variance of the order parameter between t2 and t3 in dt steps, amp contains the average amplitude between t2 and t3 in dt steps, outvaramp.dat contains the variance of the amplitude between t2 and t3 in dt steps. \n");
-        printf("Example: ./2dcgleic 512 128 2 0.83 1e4 1e3 2e3 1 1e-3 1e-3 4 rkf45 out \n");
+        printf("out is base file name for output and input.  The initial condition is retrieved from outic.dat if it exists; otherwise random initial conditions are used. The output files are: out.out contains time step data, outlast.dat contains the last state, outanimation.dat contains the states between timesteps between t2 and t3, outfrequency.dat contains the average frequency between t2 and t3 in dt steps, outvarfrequency.dat contains the variance of the frequency between t2 and t3 in dt steps, outorder.dat contains the average order parameter between t2 and t3 in dt steps, outvarorder.dat contains the variance of the order parameter between t2 and t3 in dt steps, amp contains the average amplitude between t2 and t3 in dt steps, outvaramp.dat contains the variance of the amplitude between t2 and t3 in dt steps. \n\n");
+        printf("Example: ./2dcgleic 768 192 2.0 2.0 0.75 0.75 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 random \n");
+        printf("A spiral is likely to nucleate out of amplitude turbulence in with these parameters in this time. Use the Mathematica notebook plot.nb to refine the grid and run the next example.\n\n");
+        printf("Example: ./2dcgleic 1536 192 2.0 2.0 0.75 0.85 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 refine \n");
+        printf("Quasistatically increase c_3 to a value where the spiral nucleation rate is low. \n\n ");
+        printf("Example: ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 1e4 1e3 1e4 1 1e-10 1e-10 6 rkf45 spiral \n");
+        printf("This spiralic.dat initial condition was generated using the proceedure described above.\n");
         exit(0);
     }
     int N=atoi(argv[1]);
     double L = atof(argv[2]);
-    double c1 = atof(argv[3]);
-    double c3 = atof(argv[4]);
-    struct parameters params = {c1,c3,L,N,0};
+    double c1i = atof(argv[3]);
+    double c1f = atof(argv[4]);
+    double c3i = atof(argv[5]);
+    double c3f = atof(argv[6]);
     double t = 0.;
-    double t1 = atof(argv[5]);
-    double t2 = atof(argv[6]);
-    double t3 = atof(argv[7]);
-    double dt = atof(argv[8]);
-    double epsabs = atof(argv[9]);
-    double epsrel = atof(argv[10]);
-    int Nthreads = atoi(argv[11]);
-    char* method = argv[12];
-    char* filebase = argv[13];
+    double t1 = atof(argv[7]);
+    double t2 = atof(argv[8]);
+    double t3 = atof(argv[9]);
+    double dt = atof(argv[10]);
+    struct parameters params = {c1i,c1f,c3i,c3f,t2,L,N,0};
+    double epsabs = atof(argv[11]);
+    double epsrel = atof(argv[12]);
+    int Nthreads = atoi(argv[13]);
+    char* method = argv[14];
+    char* filebase = argv[15];
     double *y, *dydt, *frequency, *varfrequency, *order, *varorder, *amp, *varamp;
     double phi, ti, omegasquared, delta, delta2;
     int i,j,count=0, acount=0;
@@ -148,15 +168,34 @@ int main (int argc, char* argv[]) {
     f2plan = fftw_plan_dft_2d(N, N, fftw_y2, fftw_F2, FFTW_FORWARD, FFTW_MEASURE);
     i2plan = fftw_plan_dft_2d(N, N, fftw_F2, fftw_y2, FFTW_BACKWARD, FFTW_MEASURE);
 
-    printf("2dcgleic %i %f %f %f %f %f %f %f %e %e %i %s %s\n", N, L, c1, c3, t1, t2, t3, dt, epsabs, epsrel, Nthreads, method, filebase);
-    fprintf(out,"2dcgleic %i %f %f %f %f %f %f %f %e %e %i %s %s\n", N, L, c1, c3, t1, t2, t3, dt, epsabs, epsrel, Nthreads, method, filebase);
+    printf("2dcgleic %i %f %f %f %f %f %f %f %f %f %e %e %i %s %s\n", N, L, c1i, c1f, c3i, c3f, t1, t2, t3, dt, epsabs, epsrel, Nthreads, method, filebase);
+    fprintf(out,"2dcgleic %i %f %f %f %f %f %f %f %f %f %e %e %i %s %s\n", N, L, c1i, c1f, c3i, c3f, t1, t2, t3, dt, epsabs, epsrel, Nthreads, method, filebase);
 
     strcpy(file,filebase);
     strcat(file,"ic.dat");
-    in = fopen(file,"r");
-    if (!fread(y,sizeof(double),2*N*N,in)) {
-        printf("Input file not found!\n");
-        return 1;
+    if((in = fopen(file,"r"))){
+        fread(y,sizeof(double),2*N*N,in);
+    }
+    else {
+        printf("No initial condition file - using random initial conditions\n");
+        //random initial conditions
+        srand(time(NULL));
+        double scalefac=3.6; //damp high wavenumber modes so the perturbation is not too jagged
+        double phi,r;
+        for(j = 0; j<N; j++) {
+            for(i = 0; i<N; i++) {
+                phi = 2*3.14/RAND_MAX*rand();
+                r =exp(-scalefac*sqrt(((N/2-abs(j-N/2))*(N/2-abs(j-N/2))+(N/2-abs(i-N/2))*(N/2-abs(i-N/2)))/(L*L)))/RAND_MAX*rand();
+                fftw_F[N*i+j][0] = r*cos(phi)/N;
+                fftw_F[N*i+j][1] = r*sin(phi)/N;
+            }
+        }
+        fftw_execute(iplan);
+        
+        for(j=0; j<N*N; j++) {
+            y[2*j] = fftw_y[j][0];
+            y[2*j+1] = fftw_y[j][1];
+        }
     }
     fclose(in);
     
@@ -214,25 +253,11 @@ int main (int argc, char* argv[]) {
                     frequency[N*i+j] += (dydt[2*(N*i+j)+1]*y[2*(N*i+j)]-y[2*(N*i+j)+1]*dydt[2*(N*i+j)])/(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]);
                     varfrequency[N*i+j] += pow((dydt[2*(N*i+j)+1]*y[2*(N*i+j)]-y[2*(N*i+j)+1]*dydt[2*(N*i+j)])/(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]),2.0);
                     
-                    order[N*i+j] += sqrt((1.0+c1*c1)/(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]))*sqrt(fftw_y2[N*i+j][0]*fftw_y2[N*i+j][0]+fftw_y2[N*i+j][1]*fftw_y2[N*i+j][1]) ;
-                    varorder[N*i+j] += pow(sqrt((1.0+c1*c1)/(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]))*sqrt(fftw_y2[N*i+j][0]*fftw_y2[N*i+j][0]+fftw_y2[N*i+j][1]*fftw_y2[N*i+j][1]), 2.0);
+                    order[N*i+j] += sqrt((1.0+c1f*c1f)/(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]))*sqrt(fftw_y2[N*i+j][0]*fftw_y2[N*i+j][0]+fftw_y2[N*i+j][1]*fftw_y2[N*i+j][1]) ;
+                    varorder[N*i+j] += pow(sqrt((1.0+c1f*c1f)/(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]))*sqrt(fftw_y2[N*i+j][0]*fftw_y2[N*i+j][0]+fftw_y2[N*i+j][1]*fftw_y2[N*i+j][1]), 2.0);
                     
                     amp[N*i+j] += sqrt(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]);
                     varamp[N*i+j] += pow(sqrt(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]), 2.0);
-                    /*delta = (dydt[2*(N*i+j)+1]*y[2*(N*i+j)]-y[2*(N*i+j)+1]*dydt[2*(N*i+j)])/(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]) - frequency[N*i+j];
-                    frequency[N*i+j] += delta/count;
-                    delta2 = (dydt[2*(N*i+j)+1]*y[2*(N*i+j)]-y[2*(N*i+j)+1]*dydt[2*(N*i+j)])/(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]) - frequency[N*i+j];
-                    varfrequency[N*i+j] += delta*delta2;
-                    
-                    delta = sqrt((1.0+c1*c1)/(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]))*sqrt(fftw_y2[N*i+j][0]*fftw_y2[N*i+j][0]+fftw_y2[N*i+j][1]*fftw_y2[N*i+j][1]) - order[N*i+j];
-                    order[N*i+j] += delta/count;
-                    delta2 = sqrt((1.0+c1*c1)/(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]))*sqrt(fftw_y2[N*i+j][0]*fftw_y2[N*i+j][0]+fftw_y2[N*i+j][1]*fftw_y2[N*i+j][1]) - order[N*i+j];
-                    varorder[N*i+j] += delta*delta2;
-                    
-                    delta = sqrt(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]) - amp[N*i+j];
-                    amp[N*i+j] += delta/count;
-                    delta2 = sqrt(y[2*(N*i+j)]*y[2*(N*i+j)]+y[2*(N*i+j)+1]*y[2*(N*i+j)+1]) - amp[N*i+j];
-                    varamp[N*i+j] += delta*delta2;*/
                 }
             }
         }
