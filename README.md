@@ -2,8 +2,8 @@
 The file 2dcgleic.c is a C program that utilizes the GNU Scientific Library (GSL), the FFTW fast Fourier transform, 
 and OpenMP to implement a parallel, pseudospectral integration of the two dimensional complex Ginzburg 
 Landau equation. The file plot.nb is a Mathematica 11.1.1.0 notebook which will plot the output of 2dcgleic and can generate 
-a grid refinement of a state for use as initial conditions. The file spiralic.dat is a sample chimera initial condition file 
-with a grid size of 1536.
+a grid refinement of a state for use as initial conditions. The file spiralic.dat (available in the release) is a sample
+chimera initial condition file with a grid size of 1536.
 
 # System requirements
 This code has been run with GSL 2.4 (https://www.gnu.org/software/gsl/) and FFTW 3.3.5 (http://www.fftw.org/) 
@@ -55,4 +55,4 @@ Example: ./2dcgleic 1536 192 2.0 2.0 0.75 0.85 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 r
 Quasistatically increase c_3 to a value where the spiral nucleation rate is low. 
 
  Example: ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 1e4 1e3 1e4 1 1e-10 1e-10 6 rkf45 spiral 
-This spiralic.dat initial condition (available in the release) was generated using the proceedure described above.
+This spiralic.dat initial condition was generated using the proceedure described above.
