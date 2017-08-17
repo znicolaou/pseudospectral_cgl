@@ -55,4 +55,4 @@ Example: ./2dcgleic 1536 192 2.0 2.0 0.75 0.85 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 r
 Quasistatically increase c_3 to a value where the spiral nucleation rate is low. 
 
  Example: ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 1e4 1e3 1e4 1 1e-10 1e-10 6 rkf45 spiral 
-This spiralic.dat initial condition was generated using the proceedure described above.
+This spiralic.dat initial condition (available in the release) was generated using the proceedure described above.
