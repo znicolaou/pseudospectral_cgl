@@ -58,7 +58,7 @@ If no spiral nucleation occurs or multiple spirals nucleate, try again.
 
 ------------------------------------------------------------------------------------
 
-Example 2) ./2dcgleic 1536 192 2.0 2.0 0.75 0.85 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 refine 
+Example 2) ./2dcgleic 1536 192 2.0 2.0 0.72 0.85 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 refine 
 
 Quasistatically increase c_3 to a value where the spiral nucleation rate is low. 
 
