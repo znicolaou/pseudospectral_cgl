@@ -7,7 +7,7 @@ chimera initial condition file with a grid size of 1536.
 
 # System requirements
 This code has been run with GSL 2.4 (https://www.gnu.org/software/gsl/) and FFTW 3.3.5 (http://www.fftw.org/) 
-with the C compiler gcc 4.9.2 (https://gcc.gnu.org/).  
+with the C compiler gcc 4.9.2 (https://gcc.gnu.org/).  For OpenMP functionality, Mac users should use gcc rather than the default clang, which can be installed with homebrew.
 
 # Compiling and usage
 Compile the program with
