@@ -52,9 +52,7 @@ out is base file name for output and input.  The initial condition is retrieved 
 
 Example 1) ./2dcgleic 768 192 2.0 2.0 0.72 0.72 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 random 
 
-A spiral is likely to nucleate out of amplitude turbulence with these parameters. 
-Use the Mathematica notebook plot.nb to refine the grid and run the next example.
-If no spiral nucleation occurs or multiple spirals nucleate, try again.
+A spiral is likely to nucleate out of amplitude turbulence with these parameters. If no spiral nucleation occurs or multiple spirals nucleate, try again. It may take a few attempts to get an isolated spiral. Use the Mathematica notebook plot.nb to refine the grid and run the next example. 
 
 ------------------------------------------------------------------------------------
 
