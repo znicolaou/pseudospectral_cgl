@@ -50,7 +50,7 @@ out is base file name for output and input.  The initial condition is retrieved 
 
 ------------------------------------------------------------------------------------
 
-Example 1) ./2dcgleic 768 192 2.0 2.0 0.75 0.75 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 random 
+Example 1) ./2dcgleic 768 192 2.0 2.0 0.72 0.72 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 random 
 
 A spiral is likely to nucleate out of amplitude turbulence with these parameters. 
 Use the Mathematica notebook plot.nb to refine the grid and run the next example.
