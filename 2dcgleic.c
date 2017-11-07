@@ -88,10 +88,10 @@ int main (int argc, char* argv[]) {
         printf("method is time stepping method - possible values are rk4 for explicit Runge-Kutta 4, rkf45 for Runge-Kutta-Fehlberg 4/5, and adams for Adams multistep\n");
         printf("out is base file name for output and input.  The initial condition is retrieved from outic.dat if it exists; otherwise random initial conditions are used. The output files are: out.out contains time step data, outlast.dat contains the last state, outanimation.dat contains the states between timesteps between t2 and t3, outfrequency.dat contains the average frequency between t2 and t3 in dt steps, outvarfrequency.dat contains the variance of the frequency between t2 and t3 in dt steps, outorder.dat contains the average order parameter between t2 and t3 in dt steps, outvarorder.dat contains the variance of the order parameter between t2 and t3 in dt steps, amp contains the average amplitude between t2 and t3 in dt steps, outvaramp.dat contains the variance of the amplitude between t2 and t3 in dt steps. \n\n");
         printf("-----------------------------------------------------------------------\n");
-        printf("Example 1) ./2dcgleic 768 192 2.0 2.0 0.70 0.70 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 random \n");
+        printf("Example 1) ./2dcgleic 768 192 2.0 2.0 0.72 0.72 1e3 1e3 1e3 1 1e-3 1e-3 6 rkf45 random \n");
         printf("A spiral is likely to nucleate out of amplitude turbulence with these parameters. If no spiral nucleation occurs or multiple spirals nucleate, try again. It may take a few attempts to get an isolated spiral. Use the Mathematica notebook plot.nb to refine the grid and run the next example. \n");
         printf("-----------------------------------------------------------------------\n");
-        printf("Example 2) ./2dcgleic 1536 192 2.0 2.0 0.70 0.85 5e2 5e2 5e2 1 1e-3 1e-3 6 rkf45 refine \n");
+        printf("Example 2) ./2dcgleic 1536 192 2.0 2.0 0.72 0.85 1e3 1e3 1e3 1 1e-3 1e-3 6 rkf45 refine \n");
         printf("Quasistatically increase c_3 to a value where the spiral nucleation rate is low. \n ");
         printf("-----------------------------------------------------------------------\n");
         printf("Example 3) ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 1e4 1e3 1e4 1 1e-10 1e-10 6 rkf45 spiral \n");
