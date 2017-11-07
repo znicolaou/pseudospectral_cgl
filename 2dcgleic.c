@@ -95,7 +95,7 @@ int main (int argc, char* argv[]) {
         printf("Quasistatically increase c_3 to a value where the spiral nucleation rate is low. \n ");
         printf("-----------------------------------------------------------------------\n");
         printf("Example 3) ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 1e4 1e3 1e4 1 1e-10 1e-10 6 rkf45 spiral \n");
-        printf("This spiralic.dat initial condition was generated using the proceedure described above. The grid spacing and error tolerances here are adequately converged to the continuum limit.\n");
+        printf("This initial condition was generated using the proceedure described above by copying the final state refinelast.dat into spiralic.dat. The grid spacing and error tolerances here are adequately converged to the continuum limit, and after this run the spiral should have grown to its full size.\n");
         printf("-----------------------------------------------------------------------\n");
         exit(0);
     }
