@@ -94,7 +94,7 @@ int main (int argc, char* argv[]) {
         printf("Example 2) ./2dcgleic 768 192 2.0 2.0 0.72 0.85 1e3 5e2 5e2 1 1e-3 1e-3 4 rkf45 spiralcore \n");
         printf("Quasistatically increase c_3 to a value where the spiral nucleation rate is low.  The Mathematica notebook plot.nb can be used to center the spiral and create a new initial condition spiralic.dat. \n ");
         printf("-----------------------------------------------------------------------\n");
-        printf("Example 3) ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 5e3 4e3 5e3 1 1e-10 1e-10 4 rkf45 refine \n");
+        printf("Example 3) ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 2e3 1.5e3 2e3 1 1e-10 1e-10 4 rkf45 refine \n");
         printf("The grid spacing and error tolerances here are converged to the continuum limit, and after this run the spiral should have grown to its full size. This will probably take over a day to run. \n");
         printf("-----------------------------------------------------------------------\n");
         exit(0);
