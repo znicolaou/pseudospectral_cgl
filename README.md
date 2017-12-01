@@ -39,11 +39,14 @@ out is base file name for output and input.  The initial condition is retrieved 
 Example 1) ./2dcgleic 768 192 2.0 2.0 0.72 0.72 1e3 5e2 5e2 1 1e-3 1e-3 4 rkf45 random 
 A spiral is likely to nucleate out of amplitude turbulence with these parameters. If no spiral nucleation occurs or multiple spirals nucleate, try again. It may take a few attempts to get an isolated spiral. Use the Mathematica notebook plot.nb to create the spiralcoreic.dat initial condition, and then run the next example. 
 -----------------------------------------------------------------------
+
 Example 2) ./2dcgleic 768 192 2.0 2.0 0.72 0.85 1e3 5e2 5e2 1 1e-3 1e-3 4 rkf45 spiralcore 
 Quasistatically increase c_3 to a value where the spiral nucleation rate is low.  The spiral should persist and no new spiral nucleation will occur once the parameters are changed. Use the Mathematica notebook plot.nb to center the spiral, refine the grid, create a new initial condition refineic.dat, and then run the next example. 
+
  -----------------------------------------------------------------------
 Example 3) ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 5e3 4e3 5e3 1 1e-10 1e-10 4 rkf45 refine 
 The grid spacing and error tolerances here are converged to the continuum limit, and after this run the spiral should have grown to its full size. WARNING: This will take over a day to run and will produce large (36GB) output files.  Use the Mathematica notebook plot.nb to create an animation of the frozen vortex chimera. 
 -----------------------------------------------------------------------
+
 
 
