@@ -95,7 +95,7 @@ int main (int argc, char* argv[]) {
         printf("Quasistatically increase c_3 to a value where the spiral nucleation rate is low.  The spiral should persist and no new spiral nucleation will occur once the parameters are changed. Use the Mathematica notebook plot.nb to center the spiral, refine the grid, create a new initial condition refineic.dat, and then run the next example. \n ");
         printf("-----------------------------------------------------------------------\n");
         printf("Example 3) ./2dcgleic 1536 192 2.0 2.0 0.85 0.85 5e3 4e3 5e3 1 1e-10 1e-10 4 rkf45 refine \n");
-        printf("The grid spacing and error tolerances here are converged to the continuum limit, and after this run the spiral should have grown to its full size. WARNING: This will take over a day to run and will produce large (36GB) output files.  Use the Mathematica notebook plot.nb to create an animation of the frozen vortex chimera. \n");
+        printf("The grid spacing and error tolerances here are converged to the continuum limit, and after this run the spiral should have grown to its full size. WARNING: This will take over a day to run and will produce large (38GB) output files.  Use the Mathematica notebook plot.nb to create an animation of the frozen vortex chimera. \n");
         printf("-----------------------------------------------------------------------\n");
         exit(0);
     }
